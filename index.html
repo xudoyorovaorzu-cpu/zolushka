@@ -1,1 +1,833 @@
 
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="description" content="ZOLUSHKA Global Marketplace">
+<title>ZOLUSHKA — Global Marketplace</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+ --gold:#d8b84c;
+ --gold2:#f2d675;
+ --dark:#171717;
+ --dark2:#242424;
+ --cream:#fffaf0;
+ --white:#fff;
+ --gray:#777;
+ --light:#f5f5f5;
+ --green:#159447;
+ --red:#d93636;
+}
+body{
+ font-family:Arial,Helvetica,sans-serif;
+ background:#f7f7f7;
+ color:#171717;
+}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.topbar{
+ background:#171717;
+ color:white;
+ padding:8px 5%;
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ font-size:13px;
+}
+.header{
+ position:sticky;
+ top:0;
+ z-index:1000;
+ background:white;
+ border-bottom:1px solid #ddd;
+ box-shadow:0 2px 10px #00000012;
+}
+.header-inner{
+ max-width:1250px;
+ margin:auto;
+ padding:13px 18px;
+ display:flex;
+ align-items:center;
+ gap:15px;
+}
+.logo{
+ font-size:30px;
+ font-weight:900;
+ color:#c7a52e;
+ letter-spacing:1px;
+ white-space:nowrap;
+ cursor:pointer;
+}
+.logo span{color:#171717}
+.search{
+ flex:1;
+ display:flex;
+ border:2px solid #d4b640;
+ border-radius:30px;
+ overflow:hidden;
+ background:white;
+}
+.search input{
+ flex:1;
+ border:0;
+ outline:0;
+ padding:13px 17px;
+ min-width:0;
+}
+.search button{
+ border:0;
+ background:#d4b640;
+ padding:0 20px;
+}
+.header-actions{
+ display:flex;
+ gap:8px;
+}
+.iconbtn{
+ border:1px solid #ddd;
+ background:white;
+ border-radius:12px;
+ padding:10px 12px;
+ position:relative;
+}
+.badge{
+ position:absolute;
+ right:-5px;
+ top:-6px;
+ background:#d93636;
+ color:white;
+ width:20px;
+ height:20px;
+ border-radius:50%;
+ font-size:11px;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+}
+.nav{
+ max-width:1250px;
+ margin:auto;
+ display:flex;
+ gap:8px;
+ overflow:auto;
+ padding:0 18px 12px;
+}
+.nav button{
+ border:0;
+ background:#f1f1f1;
+ padding:9px 14px;
+ border-radius:20px;
+ white-space:nowrap;
+}
+.nav button:hover{background:#ead27a}
+
+main{max-width:1250px;margin:auto;padding:15px 18px 80px}
+
+.hero{
+ background:linear-gradient(135deg,#191919,#36302a);
+ color:white;
+ border-radius:22px;
+ padding:28px;
+ min-height:210px;
+ position:relative;
+ overflow:hidden;
+ display:flex;
+ align-items:center;
+}
+.hero:after{
+ content:"✦";
+ position:absolute;
+ right:30px;
+ top:15px;
+ font-size:150px;
+ color:#ffffff0d;
+}
+.hero h1{font-size:40px;margin-bottom:8px}
+.hero p{color:#ddd;max-width:620px;line-height:1.6}
+.gold{color:#e4c651}
+.hero-buttons{margin-top:20px;display:flex;gap:10px;flex-wrap:wrap}
+.btn{
+ border:0;
+ border-radius:12px;
+ padding:11px 17px;
+ font-weight:bold;
+}
+.btn-gold{background:#d7b63e;color:#111}
+.btn-dark{background:#292929;color:white}
+.btn-light{background:white;color:#111}
+.btn-green{background:#159447;color:white}
+.btn-red{background:#d93636;color:white}
+
+.tv{
+ margin:18px 0;
+ background:#111;
+ border-radius:18px;
+ overflow:hidden;
+ color:white;
+ min-height:145px;
+ position:relative;
+ box-shadow:0 5px 25px #0003;
+}
+.tv-content{
+ padding:25px;
+ min-height:145px;
+ display:flex;
+ flex-direction:column;
+ justify-content:center;
+}
+.tv small{color:#d9bd4a}
+.tv h2{font-size:25px;margin:5px 0}
+.tv p{color:#ccc}
+.tv-mini{
+ position:fixed;
+ right:15px;
+ top:90px;
+ width:190px;
+ min-height:105px;
+ z-index:999;
+ margin:0;
+ border:2px solid #d8b84c;
+}
+.tv-mini .tv-content{padding:13px;min-height:100px}
+.tv-mini h2{font-size:16px}
+.tv-mini p{font-size:11px}
+
+.section-title{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ margin:25px 0 13px;
+}
+.section-title h2{font-size:23px}
+.categories{
+ display:flex;
+ gap:10px;
+ overflow:auto;
+ padding-bottom:4px;
+}
+.cat{
+ min-width:105px;
+ background:white;
+ border:1px solid #ddd;
+ border-radius:15px;
+ padding:15px 8px;
+ text-align:center;
+}
+.cat div{font-size:30px;margin-bottom:6px}
+.cat:hover{border-color:#d8b84c}
+
+.filters{
+ background:white;
+ border-radius:15px;
+ padding:13px;
+ margin:16px 0;
+ display:flex;
+ gap:10px;
+ flex-wrap:wrap;
+}
+.filters select,.filters input{
+ border:1px solid #ddd;
+ border-radius:10px;
+ padding:9px;
+}
+
+.products{
+ display:grid;
+ grid-template-columns:repeat(4,1fr);
+ gap:15px;
+}
+.product{
+ background:white;
+ border-radius:17px;
+ overflow:hidden;
+ border:1px solid #e4e4e4;
+ transition:.2s;
+ position:relative;
+}
+.product:hover{transform:translateY(-3px);box-shadow:0 7px 20px #0001}
+.product-img{
+ height:190px;
+ background:#eee;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ font-size:75px;
+}
+.product-body{padding:13px}
+.product h3{font-size:16px;margin-bottom:7px}
+.price{font-size:19px;font-weight:bold;color:#bd9621}
+.meta{font-size:12px;color:#777;margin:6px 0}
+.product-actions{display:flex;gap:7px;margin-top:10px}
+.product-actions button{
+ flex:1;
+ border:0;
+ border-radius:9px;
+ padding:9px 4px;
+}
+.heart{
+ position:absolute;
+ right:9px;
+ top:9px;
+ background:white;
+ border:0;
+ border-radius:50%;
+ width:35px;height:35px;
+}
+.compare{
+ background:#171717;
+ color:white;
+}
+
+.card{
+ background:white;
+ border-radius:17px;
+ padding:18px;
+ margin-top:15px;
+ border:1px solid #e5e5e5;
+}
+
+.info-grid{
+ display:grid;
+ grid-template-columns:repeat(3,1fr);
+ gap:13px;
+}
+.info-box{
+ background:#fafafa;
+ border-radius:14px;
+ padding:18px;
+ border:1px solid #eee;
+}
+.info-box b{display:block;font-size:20px;margin-bottom:5px}
+
+.modal{
+ display:none;
+ position:fixed;
+ inset:0;
+ background:#0009;
+ z-index:3000;
+ align-items:center;
+ justify-content:center;
+ padding:15px;
+}
+.modal.active{display:flex}
+.modal-box{
+ background:white;
+ width:min(650px,100%);
+ max-height:90vh;
+ overflow:auto;
+ border-radius:20px;
+ padding:22px;
+ position:relative;
+}
+.close{
+ position:absolute;
+ right:15px;
+ top:12px;
+ border:0;
+ background:#eee;
+ width:35px;height:35px;
+ border-radius:50%;
+}
+.form{
+ display:grid;
+ gap:11px;
+ margin-top:18px;
+}
+.form input,.form select,.form textarea{
+ width:100%;
+ padding:12px;
+ border:1px solid #ccc;
+ border-radius:10px;
+}
+.form label{font-weight:bold;font-size:13px}
+
+.tabs{
+ display:flex;
+ gap:7px;
+ overflow:auto;
+ margin-bottom:15px;
+}
+.tabs button{
+ border:1px solid #ddd;
+ background:#f5f5f5;
+ padding:9px 13px;
+ border-radius:10px;
+ white-space:nowrap;
+}
+.tabs button.active{background:#171717;color:white}
+
+.compare-row{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:12px;
+}
+.seller-box{
+ border:1px solid #ddd;
+ border-radius:13px;
+ padding:15px;
+}
+.seller-box.best{border:2px solid #d8b84c}
+
+.chat{
+ height:360px;
+ background:#f1f1f1;
+ border-radius:15px;
+ padding:15px;
+ overflow:auto;
+}
+.msg{
+ background:white;
+ padding:9px 12px;
+ border-radius:12px;
+ max-width:80%;
+ margin-bottom:8px;
+}
+.msg.me{margin-left:auto;background:#e8d478}
+
+.footer{
+ background:#171717;
+ color:white;
+ padding:35px 18px;
+}
+.footer-inner{
+ max-width:1250px;
+ margin:auto;
+ display:grid;
+ grid-template-columns:2fr 1fr 1fr 1fr;
+ gap:25px;
+}
+.footer h3{margin-bottom:10px;color:#e4c651}
+.footer p,.footer li{color:#ccc;line-height:1.8}
+.footer ul{list-style:none}
+
+.admin-badge{
+ background:#171717;
+ color:#d8b84c;
+ padding:3px 8px;
+ border-radius:7px;
+ font-size:11px;
+}
+
+.empty{
+ text-align:center;
+ padding:30px;
+ color:#777;
+ background:white;
+ border-radius:15px;
+}
+
+.toast{
+ position:fixed;
+ bottom:20px;
+ left:50%;
+ transform:translateX(-50%);
+ background:#171717;
+ color:white;
+ padding:13px 20px;
+ border-radius:12px;
+ z-index:5000;
+ display:none;
+}
+.toast.show{display:block}
+
+@media(max-width:900px){
+ .products{grid-template-columns:repeat(3,1fr)}
+ .info-grid{grid-template-columns:1fr 1fr}
+ .footer-inner{grid-template-columns:1fr 1fr}
+}
+@media(max-width:650px){
+ .topbar{font-size:11px}
+ .header-inner{flex-wrap:wrap}
+ .logo{font-size:24px}
+ .search{order:3;flex-basis:100%}
+ .header-actions{margin-left:auto}
+ .hero{padding:22px;min-height:190px}
+ .hero h1{font-size:29px}
+ .products{grid-template-columns:repeat(2,1fr);gap:9px}
+ .product-img{height:145px;font-size:55px}
+ .product-body{padding:9px}
+ .product h3{font-size:14px}
+ .price{font-size:16px}
+ .info-grid{grid-template-columns:1fr}
+ .compare-row{grid-template-columns:1fr}
+ .tv-mini{width:150px;top:82px}
+ .footer-inner{grid-template-columns:1fr}
+}
+</style>
+</head>
+
+<body>
+
+<div class="topbar">
+ <span>🌍 ZOLUSHKA — Global Marketplace</span>
+ <span id="userStatus">Mehmon</span>
+</div>
+
+<header class="header">
+ <div class="header-inner">
+  <div class="logo" onclick="goHome()">ZOLUSHKA<span>✦</span></div>
+
+  <div class="search">
+   <input id="searchInput" placeholder="Mahsulot qidiring..." oninput="renderProducts()">
+   <button onclick="renderProducts()">🔍</button>
+  </div>
+
+  <div class="header-actions">
+   <button class="iconbtn" onclick="openModal('favoritesModal')">♡<span id="favCount" class="badge">0</span></button>
+   <button class="iconbtn" onclick="openModal('cartModal')">🛒<span id="cartCount" class="badge">0</span></button>
+   <button class="iconbtn" onclick="openModal('loginModal')">👤</button>
+  </div>
+ </div>
+
+ <div class="nav">
+  <button onclick="filterCategory('all')">🏠 Bosh sahifa</button>
+  <button onclick="filterCategory('Kiyim')">👕 Kiyim</button>
+  <button onclick="filterCategory('Elektronika')">📱 Elektronika</button>
+  <button onclick="filterCategory('Uy')">🏠 Uy-ro‘zg‘or</button>
+  <button onclick="filterCategory('Go‘zallik')">💄 Go‘zallik</button>
+  <button onclick="filterCategory('Avto')">🚗 Avto</button>
+  <button onclick="openModal('sellerModal')">🏪 Sotuvchi bo‘lish</button>
+  <button onclick="openModal('advertModal')">📺 Reklama berish</button>
+  <button onclick="openModal('chatModal')">💬 Chat</button>
+ </div>
+</header>
+
+<main id="home">
+
+ <section class="hero">
+  <div>
+   <div class="gold">DUNYONING BARCHA JOYIDAN</div>
+   <h1>ZOLUSHKA Global Marketplace</h1>
+   <p>
+    Turli mamlakatlardagi sotuvchilar, do‘konlar va ishlab chiqaruvchilardan
+    mahsulotlarni toping, narxlarni solishtiring va yetkazib berishni tanlang.
+   </p>
+   <div class="hero-buttons">
+    <button class="btn btn-gold" onclick="scrollToProducts()">🛍 Xarid qilish</button>
+    <button class="btn btn-light" onclick="openModal('sellerModal')">🏪 Sotuvchi bo‘lish</button>
+    <button class="btn btn-dark" onclick="openModal('advertModal')">📺 Reklama berish</button>
+   </div>
+  </div>
+ </section>
+
+ <section id="tv" class="tv">
+  <div class="tv-content" onclick="openModal('advertModal')" style="cursor:pointer">
+   <small>📺 ZOLUSHKA TV • REKLAMA</small>
+   <h2>Mahsulotingizni butun dunyoga ko‘rsating</h2>
+   <p>Reklama berish uchun bosing →</p>
+  </div>
+ </section>
+
+ <div class="info-grid">
+  <div class="info-box">
+   <b>🌍 Global</b>
+   <span>Ko‘plab mamlakatlardan sotuvchilar</span>
+  </div>
+  <div class="info-box">
+   <b>💰 Solishtiring</b>
+   <span>Mahsulot + cargo + yetkazib berish</span>
+  </div>
+  <div class="info-box">
+   <b>🚚 Yetkazib berish</b>
+   <span>Narx va taxminiy muddatni ko‘ring</span>
+  </div>
+ </div>
+
+ <div class="section-title">
+  <h2>📂 Kategoriyalar</h2>
+ </div>
+
+ <div class="categories">
+  <button class="cat" onclick="filterCategory('Kiyim')"><div>👕</div>Kiyim</button>
+  <button class="cat" onclick="filterCategory('Elektronika')"><div>📱</div>Elektronika</button>
+  <button class="cat" onclick="filterCategory('Uy')"><div>🏠</div>Uy</button>
+  <button class="cat" onclick="filterCategory('Go‘zallik')"><div>💄</div>Go‘zallik</button>
+  <button class="cat" onclick="filterCategory('Avto')"><div>🚗</div>Avto</button>
+  <button class="cat" onclick="filterCategory('Bolalar')"><div>🧸</div>Bolalar</button>
+ </div>
+
+ <div class="section-title" id="productsSection">
+  <h2>🔥 Mashhur mahsulotlar</h2>
+  <button class="btn btn-dark" onclick="filterCategory('all')">Barchasi</button>
+ </div>
+
+ <div class="filters">
+  <select id="countryFilter" onchange="renderProducts()">
+   <option value="all">🌍 Barcha davlatlar</option>
+   <option>🇺🇿 O‘zbekiston</option>
+   <option>🇨🇳 Xitoy</option>
+   <option>🇰🇷 Janubiy Koreya</option>
+   <option>🇺🇸 AQSH</option>
+   <option>🇹🇷 Turkiya</option>
+  </select>
+
+  <select id="sortFilter" onchange="renderProducts()">
+   <option value="default">Saralash</option>
+   <option value="cheap">Arzonidan</option>
+   <option value="expensive">Qimmatidan</option>
+  </select>
+
+  <select id="currency" onchange="renderProducts()">
+   <option value="UZS">UZS so‘m</option>
+   <option value="USD">USD $</option>
+   <option value="CNY">CNY ¥</option>
+   <option value="EUR">EUR €</option>
+   <option value="KRW">KRW ₩</option>
+  </select>
+ </div>
+
+ <div id="products" class="products"></div>
+
+ <section class="card">
+  <div class="section-title">
+   <h2>⚖️ Narxni solishtirish</h2>
+  </div>
+  <p>
+   Bir xil mahsulotni turli mamlakatdagi sotuvchilardan solishtiring:
+   mahsulot narxi + cargo/yetkazib berish + taxminiy muddat.
+  </p>
+  <button class="btn btn-gold" style="margin-top:12px" onclick="showComparison()">
+   Solishtirishni ko‘rish
+  </button>
+ </section>
+
+ <section class="card">
+  <div class="section-title">
+   <h2>🏪 Sotuvchilar va ishlab chiqaruvchilar</h2>
+   <button class="btn btn-dark" onclick="openModal('sellerModal')">Sotuvchi bo‘lish</button>
+  </div>
+
+  <div class="info-grid">
+   <div class="info-box">
+    <b>🇺🇿 O‘zbekiston</b>
+    <span>Mahalliy sotuvchilar • tezroq yetkazib berish</span>
+   </div>
+   <div class="info-box">
+    <b>🇨🇳 Xitoy</b>
+    <span>Ulgurji va ishlab chiqaruvchilar</span>
+   </div>
+   <div class="info-box">
+    <b>🌎 Boshqa davlatlar</b>
+    <span>AQSH, Koreya, Turkiya va boshqa bozorlar</span>
+   </div>
+  </div>
+ </section>
+
+</main>
+
+<footer class="footer">
+ <div class="footer-inner">
+  <div>
+   <h3>ZOLUSHKA</h3>
+   <p>Global Marketplace — xaridorlar, sotuvchilar va ishlab chiqaruvchilarni birlashtiruvchi platforma.</p>
+  </div>
+  <div>
+   <h3>Xaridor</h3>
+   <ul>
+    <li>Mahsulotlar</li>
+    <li>Savat</li>
+    <li>Sevimlilar</li>
+    <li>Buyurtmalar</li>
+   </ul>
+  </div>
+  <div>
+   <h3>Sotuvchi</h3>
+   <ul>
+    <li>Sotuvchi bo‘lish</li>
+    <li>Do‘kon ochish</li>
+    <li>Mahsulot joylash</li>
+    <li>Reklama</li>
+   </ul>
+  </div>
+  <div>
+   <h3>Aloqa</h3>
+   <ul>
+    <li>💬 Chat</li>
+    <li>📞 Call</li>
+    <li>📺 Reklama</li>
+    <li>⚙️ Sozlamalar</li>
+   </ul>
+  </div>
+ </div>
+</footer>
+
+<!-- LOGIN -->
+<div class="modal" id="loginModal">
+ <div class="modal-box">
+  <button class="close" onclick="closeModal('loginModal')">×</button>
+  <h2>👤 ZOLUSHKA akkaunti</h2>
+  <p style="color:#777;margin-top:5px">Telefon raqami ro‘yxatdan o‘tishda majburiy.</p>
+
+  <div class="tabs">
+   <button class="active" onclick="showLoginTab('login')">Kirish</button>
+   <button onclick="showLoginTab('register')">Ro‘yxatdan o‘tish</button>
+  </div>
+
+  <div id="loginForm" class="form">
+   <label>Telefon raqami</label>
+   <input id="loginPhone" type="tel" placeholder="+998 90 123 45 67">
+   <label>Parol</label>
+   <input id="loginPassword" type="password" placeholder="Parol">
+   <button class="btn btn-gold" onclick="login()">Kirish</button>
+  </div>
+
+  <div id="registerForm" class="form" style="display:none">
+   <label>Ism va familiya *</label>
+   <input id="regName" placeholder="Ism Familiya">
+   <label>Telefon raqami * (majburiy)</label>
+   <input id="regPhone" type="tel" placeholder="+998 ...">
+   <label>Email</label>
+   <input id="regEmail" type="email" placeholder="email@example.com">
+   <label>Davlat *</label>
+   <select id="regCountry">
+    <option>🇺🇿 O‘zbekiston</option>
+    <option>🇨🇳 Xitoy</option>
+    <option>🇰🇷 Janubiy Koreya</option>
+    <option>🇺🇸 AQSH</option>
+    <option>🇹🇷 Turkiya</option>
+    <option>🌍 Boshqa davlat</option>
+   </select>
+   <label>Shahar</label>
+   <input id="regCity" placeholder="Shahar">
+   <label>Parol *</label>
+   <input id="regPass" type="password" placeholder="Parol">
+   <button class="btn btn-gold" onclick="register()">Ro‘yxatdan o‘tish</button>
+   <small style="color:#777">Kelajakda SMS/OTP Firebase orqali ulanadi.</small>
+  </div>
+ </div>
+</div>
+
+<!-- CART -->
+<div class="modal" id="cartModal">
+ <div class="modal-box">
+  <button class="close" onclick="closeModal('cartModal')">×</button>
+  <h2>🛒 Savat</h2>
+  <div id="cartContent" style="margin-top:15px"></div>
+ </div>
+</div>
+
+<!-- FAVORITES -->
+<div class="modal" id="favoritesModal">
+ <div class="modal-box">
+  <button class="close" onclick="closeModal('favoritesModal')">×</button>
+  <h2>♡ Sevimlilar</h2>
+  <div id="favContent" style="margin-top:15px"></div>
+ </div>
+</div>
+
+<!-- SELLER -->
+<div class="modal" id="sellerModal">
+ <div class="modal-box">
+  <button class="close" onclick="closeModal('sellerModal')">×</button>
+  <h2>🏪 Sotuvchi bo‘lish</h2>
+  <p style="color:#777">Do‘koningizni ZOLUSHKA Global Marketplace'ga qo‘shing.</p>
+
+  <div class="form">
+   <label>Do‘kon nomi *</label>
+   <input placeholder="Masalan: My Store">
+   <label>Sotuvchi turi *</label>
+   <select>
+    <option>Oddiy sotuvchi</option>
+    <option>Do‘kon</option>
+    <option>Ulgurji sotuvchi</option>
+    <option>🏭 Ishlab chiqaruvchi / Fabrika</option>
+   </select>
+   <label>Davlat *</label>
+   <select>
+    <option>🇺🇿 O‘zbekiston</option>
+    <option>🇨🇳 Xitoy</option>
+    <option>🇰🇷 Janubiy Koreya</option>
+    <option>🇺🇸 AQSH</option>
+    <option>🇹🇷 Turkiya</option>
+    <option>🌍 Boshqa</option>
+   </select>
+   <label>Shahar</label>
+   <input placeholder="Shahar">
+   <label>Do‘kon / ombor manzili</label>
+   <textarea placeholder="Manzil"></textarea>
+   <label>Telefon *</label>
+   <input type="tel" placeholder="+998 ...">
+   <label>Do‘kon haqida</label>
+   <textarea placeholder="Do‘koningiz haqida ma'lumot"></textarea>
+   <button class="btn btn-gold" onclick="submitSeller()">Ariza yuborish</button>
+  </div>
+ </div>
+</div>
+
+<!-- ADVERTISEMENT -->
+<div class="modal" id="advertModal">
+ <div class="modal-box">
+  <button class="close" onclick="closeModal('advertModal')">×</button>
+  <h2>📺 Reklama berish</h2>
+  <p style="color:#777">
+   Reklama yuboriladi → Admin tekshiradi → tasdiqlangandan keyin ZOLUSHKA TV'da ko‘rsatiladi.
+  </p>
+
+  <div class="form">
+   <label>Kompaniya / brend nomi *</label>
+   <input placeholder="Kompaniya nomi">
+
+   <label>Kontakt telefon *</label>
+   <input type="tel" placeholder="+998 / +86 / +82 / +1 ...">
+
+   <label>Email</label>
+   <input type="email" placeholder="email@example.com">
+
+   <label>Davlat / shahar</label>
+   <input placeholder="Davlat, shahar">
+
+   <label>Reklama turi</label>
+   <select>
+    <option>Mahsulot</option>
+    <option>Xizmat</option>
+    <option>Kompaniya</option>
+    <option>Do‘kon</option>
+    <option>Aksiya</option>
+   </select>
+
+   <label>Reklama matni *</label>
+   <textarea placeholder="Reklamangiz matni"></textarea>
+
+   <label>Rasm yuklash</label>
+   <input type="file" accept="image/*">
+
+   <label>Video yuklash</label>
+   <input type="file" accept="video/*">
+
+   <label>Reklama havolasi</label>
+   <input type="url" placeholder="https://...">
+
+   <label>Boshlanish sanasi</label>
+   <input type="date">
+
+   <label>Tugash sanasi</label>
+   <input type="date">
+
+   <button class="btn btn-gold" onclick="submitAd()">📤 Reklamani Admin'ga yuborish</button>
+   <button class="btn btn-dark" onclick="openModal('chatModal')">💬 Admin bilan bog‘lanish</button>
+  </div>
+ </div>
+</div>
+
+<!-- CHAT -->
+<div class="modal" id="chatModal">
+ <div class="modal-box">
+  <button class="close" onclick="closeModal('chatModal')">×</button>
+  <h2>💬 ZOLUSHKA Chat</h2>
+  <p style="color:#777">Telegram/WeChat uslubidagi chat uchun asos.</p>
+
+  <div class="chat" id="chatBox">
+   <div class="msg">Assalomu alaykum! ZOLUSHKA chatiga xush kelibsiz. 👋</div>
+   <div class="msg">Sotuvchi yoki Admin bilan bog‘lanishingiz mumkin.</div>
+  </div>
+
+  <div style="display:flex;gap:7px;margin-top:10px">
+   <input id="chatInput" style="flex:1;padding:12px;border:1px solid #ddd;border-radius:10px" placeholder="Xabar yozing...">
+   <button class="btn btn-gold" onclick="sendMessage()">Yuborish</button>
+  </div>
+
+  <div style="display:flex;gap:7px;margin-top:10px">
+   <button class
