@@ -1,1 +1,324 @@
 
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ZOLUSHKA — Global Marketplace</title>
+<style>
+:root{--gold:#e4c45e;--bg:#f7f6fa;--dark:#24232c;--white:#fff;--line:#e8e6ed}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--dark)}
+button,input,select,textarea{font:inherit}
+button{border:0;border-radius:10px;padding:11px 14px;background:var(--dark);color:white;cursor:pointer}
+button.gold{background:var(--gold);color:#201e16;font-weight:bold}
+button.light{background:#f0eef4;color:var(--dark);border:1px solid var(--line)}
+input,select,textarea{width:100%;padding:11px;border:1px solid var(--line);border-radius:10px;background:white}
+header{position:sticky;top:0;background:#ffffffed;z-index:5;border-bottom:1px solid var(--line)}
+.wrap{max-width:1250px;margin:auto;padding:14px}
+.top{background:var(--dark);color:white;text-align:center;padding:8px;font-size:13px}
+.nav{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.logo{font-size:23px;font-weight:900;letter-spacing:1px;cursor:pointer}
+.flower{color:#d7a800;font-size:30px}
+.search{flex:1;display:flex;gap:6px;min-width:200px}
+.actions{display:flex;gap:6px;flex-wrap:wrap}
+.hero{margin-top:20px;border-radius:22px;padding:28px;background:linear-gradient(120deg,#fff0bd,#fff,#fce9f2)}
+.hero h1{font-size:clamp(28px,5vw,45px);margin:12px 0}
+.hero p{line-height:1.6;color:#696570}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px}
+.product{background:white;border:1px solid var(--line);border-radius:15px;overflow:hidden}
+.photo{height:175px;background:#f0eef4;display:grid;place-items:center;position:relative;font-size:55px;overflow:hidden}
+.photo img{width:100%;height:100%;object-fit:cover}
+.photo button{position:absolute;top:7px;padding:7px;background:#ffffffed;color:#222;border-radius:50%}
+.photo .share{left:7px}.photo .fav{right:7px}
+.pbody{padding:12px}
+.pname{font-weight:bold;min-height:35px}
+.price{font-size:18px;font-weight:900;margin:9px 0}
+.meta{font-size:12px;color:#777;line-height:1.6}
+.row{display:flex;gap:7px;flex-wrap:wrap;align-items:center}
+.row>*{flex:1}
+.chips{display:flex;gap:7px;flex-wrap:wrap;margin:15px 0}
+.chip{background:white;color:#222;border:1px solid var(--line);border-radius:25px}
+.chip.active{background:#24232c;color:white}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 255px;gap:15px;align-items:start}
+.ad{position:sticky;top:90px;background:white;padding:13px;border-radius:16px;border:1px solid var(--line)}
+.adinner{background:#302a39;color:white;padding:18px;border-radius:12px}
+.adinner p{font-size:13px;color:#ddd}
+.panel{background:white;padding:18px;border:1px solid var(--line);border-radius:15px;margin:15px 0}
+.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.field{display:grid;gap:6px}
+.field label{font-size:13px;font-weight:bold}
+.full{grid-column:1/-1}
+.item{padding:12px;border:1px solid var(--line);border-radius:11px;margin:8px 0;display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.muted{color:#777;font-size:13px}
+.notice{padding:12px;background:#fff5ce;border-radius:10px;font-size:13px;line-height:1.5;margin:12px 0}
+.hidden{display:none!important}
+footer{padding:30px 14px;color:#777;font-size:13px}
+#modal{position:fixed;inset:0;background:#17151bc9;z-index:20;display:flex;align-items:center;justify-content:center;padding:12px}
+.modalbox{background:white;border-radius:17px;padding:19px;width:min(700px,100%);max-height:90vh;overflow:auto}
+.modalhead{display:flex;justify-content:space-between;align-items:center;gap:8px}
+#toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#222;color:white;padding:12px 18px;border-radius:10px;z-index:30}
+.empty{text-align:center;padding:30px;color:#777}
+@media(max-width:900px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}.layout{grid-template-columns:1fr}.ad{position:static}}
+@media(max-width:600px){.wrap{padding:10px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.photo{height:135px}.pbody{padding:9px}.pname{font-size:13px}.price{font-size:16px}.formgrid{grid-template-columns:1fr}.full{grid-column:auto}.hero{padding:20px}.actions button{padding:8px;font-size:12px}.search{order:3;flex-basis:100%}}
+</style>
+</head>
+<body>
+<div class="top">🌍 ZOLUSHKA — Dunyo bo‘ylab xaridlar</div>
+
+<header>
+<div class="wrap nav">
+  <div class="logo" onclick="home()"><span class="flower">✿</span> ZOLUSHKA</div>
+  <div class="search">
+    <input id="search" placeholder="Mahsulot qidirish..." oninput="renderProducts()">
+    <button class="gold" onclick="document.getElementById('imageFile').click()">📷</button>
+    <input id="imageFile" type="file" accept="image/*" class="hidden" onchange="imageSearch(this)">
+  </div>
+  <div class="actions">
+    <button class="light" onclick="favorites()">♡ <span id="favCount">0</span></button>
+    <button class="light" onclick="cartPage()">🛒 <span id="cartCount">0</span></button>
+    <button class="light" id="loginButton" onclick="login()">Kirish</button>
+    <select id="language" style="width:auto" onchange="changeLang(this.value)">
+      <option value="uz">UZ</option>
+      <option value="ru">RU</option>
+      <option value="en">EN</option>
+      <option value="zh">中文</option>
+      <option value="ko">한국어</option>
+    </select>
+  </div>
+</div>
+</header>
+
+<main class="wrap" id="homeView">
+<section class="hero">
+  <div>✨ GLOBAL MARKETPLACE</div>
+  <h1 id="heroTitle">Dunyo mahsulotlari — bir joyda.</h1>
+  <p id="heroText">Turli mamlakatlardagi sotuvchilar va xaridorlarni birlashtiruvchi xalqaro savdo platformasi.</p>
+  <div class="row">
+    <button class="gold" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">Mahsulotlarni ko‘rish</button>
+    <button class="light" onclick="sellerPage()">Sotuvchi bo‘lish</button>
+  </div>
+</section>
+
+<h3>Kategoriyalar</h3>
+<div class="chips" id="categories"></div>
+
+<div class="layout">
+<section>
+  <h3 id="productTitle">Ommabop mahsulotlar</h3>
+  <div class="muted" id="productCount"></div>
+  <div class="grid" id="products"></div>
+  <div id="page"></div>
+</section>
+
+<aside class="ad">
+  <div class="adinner">
+    <div>📺 ZOLUSHKA TV</div>
+    <h3 id="adTitle">Reklamangiz shu yerda!</h3>
+    <p id="adText">Reklama joylashtirish uchun administrator bilan bog‘laning.</p>
+    <button class="gold" onclick="contactAdmin()">Reklama haqida</button>
+  </div>
+  <div id="subscribers" class="panel hidden">
+    Obunachilar
+    <h2 id="subCount">0+</h2>
+  </div>
+  <div style="display:grid;gap:8px;margin-top:12px">
+    <button class="light" onclick="chatPage()">💬 Chat</button>
+    <button class="light" onclick="ordersPage()">📦 Buyurtmalarim</button>
+    <button class="light" onclick="settingsPage()">⚙️ Sozlamalar</button>
+    <button class="light" onclick="profilePage()">👤 Profil</button>
+    <button class="light" onclick="adminPage()">🔐 Admin kabineti</button>
+  </div>
+</aside>
+</div>
+</main>
+
+<section class="wrap hidden" id="otherView"></section>
+
+<footer>
+  <div class="wrap">
+    <b>ZOLUSHKA — Global Marketplace</b>
+    <p>© 2026 ZOLUSHKA. Barcha huquqlar himoyalangan.</p>
+    <p>Haqiqiy SMS, to‘lov, chat va server xavfsizligi uchun backend integratsiyasi zarur.</p>
+  </div>
+</footer>
+
+<div id="modal" class="hidden" onclick="if(event.target===this)closeModal()">
+  <div class="modalbox">
+    <div class="modalhead"><h3 id="modalTitle">ZOLUSHKA</h3><button onclick="closeModal()">✕</button></div>
+    <div id="modalBody"></div>
+  </div>
+</div>
+<div id="toast" class="hidden"></div>
+
+<script>
+const DBKEY="zolushka_global_v1";
+
+const initialProducts=[
+{id:"1",name:"Zamonaviy sumka",category:"Kiyim va aksessuarlar",price:85000,currency:"UZS",country:"O‘zbekiston",location:"Toshkent",cargo:12000,delivery:"1–3 kun",seller:"Mahalliy do‘kon",emoji:"👜",description:"Kundalik foydalanish uchun qulay sumka.",stock:15,approved:true},
+{id:"2",name:"Oshxona idishlari",category:"Uy va oshxona",price:125000,currency:"UZS",country:"Xitoy",location:"Yiwu, Xitoy",cargo:40000,delivery:"10–18 kun",seller:"China Shop",emoji:"🍽️",description:"Uy uchun idishlar to‘plami.",stock:25,approved:true},
+{id:"3",name:"Simsiz quloqchin",category:"Elektronika",price:99000,currency:"UZS",country:"Janubiy Koreya",location:"Seul",cargo:30000,delivery:"7–12 kun",seller:"Seoul Store",emoji:"🎧",description:"Musiqa va qo‘ng‘iroqlar uchun.",stock:10,approved:true},
+{id:"4",name:"Yumshoq o‘yinchoq",category:"Bolalar",price:65000,currency:"UZS",country:"O‘zbekiston",location:"Samarqand",cargo:10000,delivery:"1–4 kun",seller:"Mehr Shop",emoji:"🧸",description:"Sovg‘a uchun yumshoq o‘yinchoq.",stock:12,approved:true},
+{id:"5",name:"Sport suv idishi",category:"Sport",price:45000,currency:"UZS",country:"Xitoy",location:"Guangzhou",cargo:18000,delivery:"10–16 kun",seller:"Active Shop",emoji:"🥤",description:"Sport va sayohat uchun.",stock:30,approved:true},
+{id:"6",name:"Parvarish to‘plami",category:"Go‘zallik",price:78000,currency:"UZS",country:"Turkiya",location:"Istanbul",cargo:27000,delivery:"6–10 kun",seller:"Beauty Store",emoji:"🧴",description:"Shaxsiy parvarish mahsulotlari.",stock:8,approved:true},
+{id:"7",name:"Stol chirog‘i",category:"Uy va oshxona",price:112000,currency:"UZS",country:"O‘zbekiston",location:"Buxoro",cargo:10000,delivery:"1–3 kun",seller:"Nur Market",emoji:"💡",description:"Uy va ish stoli uchun.",stock:7,approved:true},
+{id:"8",name:"Kundalik krossovka",category:"Kiyim va aksessuarlar",price:185000,currency:"UZS",country:"Xitoy",location:"Shenzhen",cargo:38000,delivery:"9–17 kun",seller:"StepUp",emoji:"👟",description:"Qulay kundalik oyoq kiyimi.",stock:11,approved:true}
+];
+
+function loadDB(){
+ try{
+  const d=JSON.parse(localStorage.getItem(DBKEY));
+  if(d&&d.products)return d;
+ }catch(e){}
+ return {products:initialProducts,users:[],orders:[],ads:{title:"Reklamangiz shu yerda!",text:"Reklama joylashtirish uchun administrator bilan bog‘laning.",show:false,count:0},chats:[],user:null};
+}
+let db=loadDB(),category="Barchasi",cart=[],chat=[],imageChosen=false;
+
+function save(){localStorage.setItem(DBKEY,JSON.stringify(db))}
+function safe(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function money(n,c="UZS"){return new Intl.NumberFormat("uz-UZ",{maximumFractionDigits:0}).format(Number(n)||0)+" "+c}
+function products(){return db.products.filter(p=>p.approved!==false)}
+function isAdmin(){return db.user?.role==="admin"}
+function isSeller(){return ["seller","admin"].includes(db.user?.role)}
+function notify(t){
+ const e=document.getElementById("toast");e.textContent=t;e.classList.remove("hidden");
+ clearTimeout(window.noticeTimer);window.noticeTimer=setTimeout(()=>e.classList.add("hidden"),2600);
+}
+function render(){
+ document.getElementById("adTitle").textContent=db.ads.title;
+ document.getElementById("adText").textContent=db.ads.text;
+ document.getElementById("subscribers").classList.toggle("hidden",!db.ads.show);
+ document.getElementById("subCount").textContent=(db.ads.count||0)+"+";
+ document.getElementById("loginButton").textContent=db.user?(db.user.name||"Profil"):"Kirish";
+ renderCategories();renderProducts();counts();
+}
+function renderCategories(){
+ const cats=["Barchasi",...new Set(products().map(p=>p.category))];
+ document.getElementById("categories").innerHTML=cats.map(c=>
+ `<button class="chip ${category===c?"active":""}" onclick="setCategory('${safe(c)}')">${safe(c)}</button>`).join("");
+}
+function setCategory(c){category=c;renderCategories();renderProducts()}
+function renderProducts(){
+ const q=(document.getElementById("search").value||"").toLowerCase().trim();
+ const list=products().filter(p=>(category==="Barchasi"||p.category===category)&&
+ (!q||(p.name+" "+p.category+" "+p.country+" "+p.location).toLowerCase().includes(q)));
+ document.getElementById("productCount").textContent=list.length+" ta mahsulot";
+ document.getElementById("products").innerHTML=list.length?list.map(p=>{
+ const fav=(db.user?.favorites||[]).includes(p.id);
+ return `<article class="product">
+ <div class="photo">${p.image?`<img src="${p.image}" alt="${safe(p.name)}">`:`<span>${safe(p.emoji||"📦")}</span>`}
+ <button class="share" onclick="share('${p.id}')" title="Havolani ulashish">↗</button>
+ <button class="fav" onclick="favorite('${p.id}')" title="Sevimlilar">${fav?"♥":"♡"}</button></div>
+ <div class="pbody"><div class="pname">${safe(p.name)}</div>
+ <div class="price">${money(p.price,p.currency)}</div>
+ <div class="meta">🌍 ${safe(p.country)} · ${safe(p.location)}</div>
+ <div class="meta">🚚 ${money(p.cargo,p.currency)} · ${safe(p.delivery)}</div>
+ <div class="row" style="margin-top:10px">
+ <button class="light" onclick="details('${p.id}')">Batafsil</button>
+ <button class="gold" onclick="addCart('${p.id}')">Savatga +</button></div></div></article>`;
+ }).join(""):`<div class="empty" style="grid-column:1/-1">Mahsulot topilmadi.</div>`;
+}
+function counts(){
+ document.getElementById("cartCount").textContent=cart.reduce((s,x)=>s+x.qty,0);
+ document.getElementById("favCount").textContent=(db.user?.favorites||[]).length;
+}
+function home(){
+ document.getElementById("homeView").classList.remove("hidden");
+ document.getElementById("otherView").classList.add("hidden");
+ render();window.scrollTo(0,0);
+}
+function page(html){
+ document.getElementById("homeView").classList.add("hidden");
+ const v=document.getElementById("otherView");v.classList.remove("hidden");v.innerHTML=html;window.scrollTo(0,0);
+}
+function modal(title,html){
+ document.getElementById("modalTitle").textContent=title;
+ document.getElementById("modalBody").innerHTML=html;
+ document.getElementById("modal").classList.remove("hidden");
+}
+function closeModal(){document.getElementById("modal").classList.add("hidden")}
+function details(id){
+ const p=db.products.find(x=>x.id===id);if(!p)return;
+ modal("Mahsulot tafsilotlari",`
+ <div style="text-align:center;font-size:75px">${p.image?`<img src="${p.image}" style="max-width:100%;max-height:230px">`:safe(p.emoji||"📦")}</div>
+ <h2>${safe(p.name)}</h2><div class="price">${money(p.price,p.currency)}</div>
+ <p>${safe(p.description)}</p>
+ <p>🏪 Sotuvchi: ${safe(p.seller)}</p>
+ <p>🌍 Sotuvchi mamlakati: <b>${safe(p.country)}</b></p>
+ <p>📍 Joylashuvi: ${safe(p.location)}</p>
+ <p>🚚 Kargo narxi: ${money(p.cargo,p.currency)}</p>
+ <p>⏱️ Yetkazish muddati: ${safe(p.delivery)}</p>
+ <p>📦 Qoldiq: ${Number(p.stock)||0}</p>
+ <div class="notice">Mahsulot va kargo taxminiy jami: <b>${money(Number(p.price)+Number(p.cargo),p.currency)}</b>. Yakuniy narx sotuvchi va logistika tasdig‘iga bog‘liq.</div>
+ <button class="gold" onclick="addCart('${p.id}');closeModal()">Savatga qo‘shish</button>
+ <button class="light" onclick="share('${p.id}')">Havolani ulashish ↗</button>`);
+}
+function share(id){
+ const url=location.href.split("#")[0]+"#product="+encodeURIComponent(id);
+ if(navigator.share)navigator.share({title:"ZOLUSHKA mahsuloti",url}).catch(()=>{});
+ else if(navigator.clipboard)navigator.clipboard.writeText(url).then(()=>notify("Havola nusxalandi")).catch(()=>prompt("Havolani nusxalang:",url));
+ else prompt("Havolani nusxalang:",url);
+}
+function imageSearch(el){
+ if(!el.files?.[0])return;
+ imageChosen=true;
+ notify("Rasm tanlandi. Haqiqiy o‘xshash rasm qidiruvi uchun AI xizmati ulanishi kerak.");
+}
+function addCart(id){
+ const x=cart.find(x=>x.id===id);if(x)x.qty++;else cart.push({id,qty:1});
+ counts();notify("Savatga qo‘shildi");
+}
+function cartPage(){
+ page(`<h2>🛒 Savat</h2><div class="panel">${cart.length?cart.map(x=>{
+ const p=db.products.find(p=>p.id===x.id);if(!p)return "";
+ return `<div class="item"><div><b>${safe(p.name)}</b><div>${money(p.price)} × ${x.qty}</div></div>
+ <div class="row"><button class="light" onclick="qty('${x.id}',-1)">−</button><button class="light" onclick="qty('${x.id}',1)">+</button><button onclick="removeCart('${x.id}')">O‘chirish</button></div></div>`;
+ }).join(""):`<div class="empty">Savatingiz bo‘sh.</div>`}
+ <h3>Mahsulotlar jami: ${money(cart.reduce((s,x)=>s+(db.products.find(p=>p.id===x.id)?.price||0)*x.qty,0))}</h3>
+ <p class="muted">Kargo narxi buyurtma yo‘nalishiga qarab o‘zgarishi mumkin.</p>
+ <button class="gold" onclick="checkout()">Buyurtma berish</button></div>`);
+}
+function qty(id,n){let x=cart.find(x=>x.id===id);if(x){x.qty+=n;if(x.qty<1)cart=cart.filter(y=>y.id!==id)}counts();cartPage()}
+function removeCart(id){cart=cart.filter(x=>x.id!==id);counts();cartPage()}
+function checkout(){
+ if(!cart.length){notify("Savat bo‘sh");return}
+ if(!db.user){login("Buyurtma berish uchun telefon raqamingizni kiriting.");return}
+ modal("Buyurtmani rasmiylashtirish",`<form onsubmit="placeOrder(event)">
+ <div class="formgrid">
+ <div class="field"><label>Ism-familiya</label><input name="name" value="${safe(db.user.name||"")}" required></div>
+ <div class="field"><label>Telefon</label><input name="phone" value="${safe(db.user.phone)}" required></div>
+ <div class="field full"><label>Yetkazish manzili</label><textarea name="address" required></textarea></div>
+ <div class="field full"><label>Yetkazish usuli</label><select name="delivery"><option>Kuryer</option><option>Kargo omboridan olish</option><option>Sotuvchi bilan kelishish</option></select></div>
+ </div><div class="notice">Demo versiyada haqiqiy karta to‘lovi olinmaydi.</div><button class="gold">Buyurtmani tasdiqlash</button></form>`);
+}
+function placeOrder(e){
+ e.preventDefault();const f=new FormData(e.target);
+ const items=cart.map(x=>({id:x.id,qty:x.qty,name:db.products.find(p=>p.id===x.id)?.name||"",price:db.products.find(p=>p.id===x.id)?.price||0}));
+ db.orders.push({id:"ZOL-"+Date.now(),phone:db.user.phone,name:f.get("name"),address:f.get("address"),delivery:f.get("delivery"),items,total:items.reduce((s,x)=>s+x.price*x.qty,0),status:"Yangi",date:new Date().toLocaleString()});
+ save();cart=[];counts();closeModal();ordersPage();notify("Buyurtma saqlandi");
+}
+function favorite(id){
+ if(!db.user){login("Sevimlilarni saqlash uchun tizimga kiring.");return}
+ db.user.favorites=db.user.favorites||[];
+ db.user.favorites.includes(id)?db.user.favorites=db.user.favorites.filter(x=>x!==id):db.user.favorites.push(id);
+ save();render();
+}
+function favorites(){
+ if(!db.user){login("Sevimlilar uchun tizimga kiring.");return}
+ const a=(db.user.favorites||[]).map(id=>db.products.find(p=>p.id===id)).filter(Boolean);
+ page(`<h2>♡ Sevimlilar</h2><div class="grid">${a.map(p=>`<div class="product"><div class="photo">${p.image?`<img src="${p.image}">`:safe(p.emoji)}</div><div class="pbody"><b>${safe(p.name)}</b><p>${money(p.price)}</p><button class="gold" onclick="details('${p.id}')">Batafsil</button></div></div>`).join("")||'<div class="empty">Hozircha sevimli mahsulot yo‘q.</div>'}</div>`);
+}
+function login(note=""){
+ modal("Telefon orqali kirish",`${note?`<div class="notice">${safe(note)}</div>`:""}
+ <form onsubmit="loginSubmit(event)"><div class="formgrid">
+ <div class="field full"><label>Ism-familiya</label><input name="name" placeholder="Ismingiz"></div>
+ <div class="field full"><label>Telefon raqami *</label><input name="phone" type="tel" placeholder="+998..." required></div>
+ <div class="field full"><label>Sinov uchun rol</label><select name="role"><option value="customer">Xaridor</option><option value="seller">Sotuvchi</option><option value="admin">Admin demo</option></select></div>
+ </div><div class="notice">Bu demo kirish: SMS-kod yuborilmaydi. Haqiqiy versiyada Firebase telefon tasdiqlashi va serverda ruxsat tekshiruvi kerak. Admin demo rolini ochiq qoldirish xavfsiz emas.</div>
+ <button class="gold">Davom etish</button></form>`);
+}
+function loginSubmit(e){
+ e.preventDefault();const f=new FormData(e.target),phone=String(f.get("phone")).trim();
+ let u=db.users.find(x=>x.phone===phone);
+ if(!u){u={phone,name:String(f.get("name")||""),role:f.get("role"),favorites:[]};db.users.push(u)}
+ else{u.name=String
